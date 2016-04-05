@@ -21,8 +21,3 @@ highcharts:highcharts-meteor
 
 
 highcharts-container
-
-
-useraccounts:bootstrap
-aldeed:autoform
-tsega:bootstrap3-datetimepicker
