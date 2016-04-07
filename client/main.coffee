@@ -1,15 +1,13 @@
+#Router.route('/');
 
-
-if Meteor.isClient
-  Template.hello.onCreated ->
-    @counter = new ReactiveVar(0)
-    return
-  Template.hello.helpers counter: ->
-  Template.instance().counter.get()
-  Template.hello.events 'click button': (event, instance) ->
-    instance.counter.set instance.counter.get() + 1
-    return
-return
+Template.hello.onCreated ->
+  @counter = new ReactiveVar(0)
+  return
+Template.hello.helpers counter: ->
+Template.instance().counter.get()
+Template.hello.events 'click button': (event, instance) ->
+  instance.counter.set instance.counter.get() + 1
+  return
 
 Template.shipment_home.rendered = ->
   Tracker.autorun ->

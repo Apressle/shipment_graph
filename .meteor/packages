@@ -21,3 +21,4 @@ highcharts:highcharts-meteor
 
 
 highcharts-container
+iron:router

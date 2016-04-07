@@ -1,11 +1,12 @@
-<!--<template name="shipment_home">-->
-    <!--<div class="portlet light">-->
-        <!--<div class="portlet-title">-->
-            <!--<div class="caption">-->
-                <!--<i class="icon-bar-chart font-green"></i>-->
-                <!--<span class="caption-subject font-green bold uppercase">Savings Analytics Dashboard</span>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="col-lg-6" id="shipment_count" style="padding-top:15px;"></div>-->
-    <!--</div>-->
-<!--</template>-->
+<template name="home">
+    <div class="portlet light">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="icon-bar-chart font-green"></i>
+                <span class="caption-subject font-green bold uppercase">Savings Analytics Dashboard</span>
+            </div>
+        </div>
+        {{> yield}}
+        <div class="col-lg-6" id="shipment_count" style="padding-top:15px;"></div>
+    </div>
+</template>
