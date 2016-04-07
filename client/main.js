@@ -2,6 +2,7 @@
 (function() {
   Template.hello.onCreated(function() {
     this.counter = new ReactiveVar(0);
+    console.log("hello oncreated");
   });
 
   Template.hello.helpers({

@@ -1,7 +1,11 @@
-#Router.route('/');
+#Router.route '/', ->
+#  @render 'Home'
+#  return
+#
 
 Template.hello.onCreated ->
   @counter = new ReactiveVar(0)
+  console.log "hello oncreated"
   return
 Template.hello.helpers counter: ->
 Template.instance().counter.get()
