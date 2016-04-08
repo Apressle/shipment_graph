@@ -2,17 +2,13 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/client/main.js" />
-        <item url="file://$PROJECT_DIR$/client/_router_main.js" />
-        <item url="file://$PROJECT_DIR$/client/shipment_home.js" />
-        <item url="file://$PROJECT_DIR$/server/main.js" />
+        <item url="file://$PROJECT_DIR$/server/shipment_graph.js" />
+        <item url="file://$PROJECT_DIR$/client/shipment_graph.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/client/main.js" />
-      <root url="file://$PROJECT_DIR$/client/_router_main.js" />
-      <root url="file://$PROJECT_DIR$/client/shipment_home.js" />
-      <root url="file://$PROJECT_DIR$/server/main.js" />
+      <root url="file://$PROJECT_DIR$/server/shipment_graph.js" />
+      <root url="file://$PROJECT_DIR$/client/shipment_graph.js" />
     </CLASSES>
     <SOURCES />
   </library>
