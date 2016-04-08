@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "shipment_graph.js",
+  "sourceRoot": "",
+  "sources": [
+    "shipment_graph.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,IAAC,CAAA,SAAD,GAAiB,IAAA,KAAK,CAAC,UAAN,CAAiB,WAAjB;;EACjB,SAAS,CAAC,KAAV,CACE;IAAA,MAAA,EAAQ,SAAA;aAAM;IAAN,CAAR;IACA,MAAA,EAAQ,SAAA;aAAM;IAAN,CADR;GADF;AADA"
+}
