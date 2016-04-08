@@ -76,8 +76,7 @@
         },
         series: [
           {
-            name: 'Shipments',
-            data: shipment_dates
+            name: 'Shipments'
           }
         ]
       });

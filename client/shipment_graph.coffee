@@ -55,7 +55,7 @@ Template.home.rendered = ->
       series: [
         {
           name: 'Shipments'
-          data: shipment_dates
+#          data: results
         }
       ]
     return
