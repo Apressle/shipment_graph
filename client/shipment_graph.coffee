@@ -71,31 +71,6 @@ Template.main.rendered = ->
       ]
     return
 
-#Template.home.rendered= ->
-# shipments = Shipments.find().fetch()
-# chart_data_array = []
-# for shipment in shipments
-#   chart_data = {}
-#   chart_data.date = shipment.date
-#   console.log chart_data.date
-#   chart_data.cost = shipment.cost
-#   chart_data_array.push chart_data
-# console.log "chart_data_array " + chart_data_array
-# return chart_data_array
-
-#Template.home.helpers
-#  shipments: ->
-#    shipments = Shipments.find().fetch()
-#    chart_data_array = []
-#    for shipment in shipments
-#      chart_data = {}
-#      chart_data.date = shipment.date
-#      console.log chart_data.date
-#      chart_data.cost = shipment.cost
-#      chart_data_array.push chart_data
-#    console.log "chart_data_array " + (chart_data_array)
-#    return chart_data_array
-
 console.log 'Hello world'
 
 random = 0.5
