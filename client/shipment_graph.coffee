@@ -13,27 +13,8 @@ Router.route '/',
   template: 'home'
   name: 'home'
 
-#Global Functions
-
-#shipment_dates = _.pluck(result, 'date')
-#  results = _.chain(result).map(_.partial(_.pick, 'date', 'cost')).value()
-#  console.log shipment_dates
-
-
-result = Shipments.find().fetch()
-_.mixin pluckMany: ->
-  args = _.rest(arguments, 1)
-  _.map arguments[0], (item) ->
-    obj = {}
-    _.each args, (arg) ->
-      obj[arg] = item[arg]
-      return
-    obj
-projected = _.chain(result).pluckMany('date', 'cost').value()
-console.log JSON.stringify(projected)
 
 Template.home.rendered = ->
-  shipment_costs = _.pluck(result, 'cost')
   Tracker.autorun ->
 		$ ->
     $('#shipment_count').highcharts
@@ -69,16 +50,23 @@ Template.home.rendered = ->
       series: [
         {
           name: 'Shipments'
-#          data: results
+#          data: chart_data_array
         }
       ]
     return
 
+shipments = Shipments.find().fetch()
+chart_data_array = []
+for shipment in shipments
+  chart_data = {}
+  chart_data.date = shipment.date
+  console.log chart_data.date
+  chart_data.cost = shipment.cost
+  chart_data_array.push chart_data
+console.log "chart_data_array " + chart_data_array
+return chart_data_array
 
 console.log 'Hello world'
-
-#if Meteor.isClient
-console.log 'Hello client'
 
 random = 0.5
 # For later, when random shipment creation is used.
