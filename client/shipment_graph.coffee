@@ -13,11 +13,22 @@ Router.route '/',
   template: 'home'
   name: 'home'
 
+Template.home.helpers
+  graph_data: ->
+    shipments = Shipments.find().fetch()
+    chart_data_array = []
+    for shipment in shipments
+      chart_data = {}
+      chart_data.date = shipment.date
+      console.log chart_data.date
+      chart_data.cost = shipment.cost
+      chart_data_array.push chart_data
+    console.log "chart_data_array " + (chart_data_array)
+    return chart_data_array
+
 Template.main.onCreated ->
   @subscribe 'shipments'
   console.log "subscribed"
-
-
 
 Template.main.rendered = ->
   Tracker.autorun ->
@@ -55,23 +66,35 @@ Template.main.rendered = ->
       series: [
         {
           name: 'Shipments'
-          data: chart_data_setup()
+#          data: shipments
         }
       ]
     return
-@chart_data_setup = () ->
-  console.log (Shipments.find().count())
-  shipments = Shipments.find().fetch()
-  console.log JSON.stringify(shipments)
-  chart_data_array = []
-  for shipment in shipments
-    chart_data = {}
-    chart_data.date = shipment.date
-  #  console.log chart_data.date
-    chart_data.cost = shipment.cost
-    chart_data_array.push chart_data
-  console.log "chart_data_array " + chart_data_array
-  return chart_data_array
+
+#Template.home.rendered= ->
+# shipments = Shipments.find().fetch()
+# chart_data_array = []
+# for shipment in shipments
+#   chart_data = {}
+#   chart_data.date = shipment.date
+#   console.log chart_data.date
+#   chart_data.cost = shipment.cost
+#   chart_data_array.push chart_data
+# console.log "chart_data_array " + chart_data_array
+# return chart_data_array
+
+#Template.home.helpers
+#  shipments: ->
+#    shipments = Shipments.find().fetch()
+#    chart_data_array = []
+#    for shipment in shipments
+#      chart_data = {}
+#      chart_data.date = shipment.date
+#      console.log chart_data.date
+#      chart_data.cost = shipment.cost
+#      chart_data_array.push chart_data
+#    console.log "chart_data_array " + (chart_data_array)
+#    return chart_data_array
 
 console.log 'Hello world'
 

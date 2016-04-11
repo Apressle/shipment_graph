@@ -26,6 +26,24 @@
     name: 'home'
   });
 
+  Template.home.helpers({
+    graph_data: function() {
+      var chart_data, chart_data_array, i, len, shipment, shipments;
+      shipments = Shipments.find().fetch();
+      chart_data_array = [];
+      for (i = 0, len = shipments.length; i < len; i++) {
+        shipment = shipments[i];
+        chart_data = {};
+        chart_data.date = shipment.date;
+        console.log(chart_data.date);
+        chart_data.cost = shipment.cost;
+        chart_data_array.push(chart_data);
+      }
+      console.log("chart_data_array " + chart_data_array);
+      return chart_data_array;
+    }
+  });
+
   Template.main.onCreated(function() {
     this.subscribe('shipments');
     return console.log("subscribed");
@@ -76,29 +94,11 @@
         },
         series: [
           {
-            name: 'Shipments',
-            data: chart_data_setup()
+            name: 'Shipments'
           }
         ]
       });
     });
-  };
-
-  this.chart_data_setup = function() {
-    var chart_data, chart_data_array, i, len, shipment, shipments;
-    console.log(Shipments.find().count());
-    shipments = Shipments.find().fetch();
-    console.log(JSON.stringify(shipments));
-    chart_data_array = [];
-    for (i = 0, len = shipments.length; i < len; i++) {
-      shipment = shipments[i];
-      chart_data = {};
-      chart_data.date = shipment.date;
-      chart_data.cost = shipment.cost;
-      chart_data_array.push(chart_data);
-    }
-    console.log("chart_data_array " + chart_data_array);
-    return chart_data_array;
   };
 
   console.log('Hello world');
