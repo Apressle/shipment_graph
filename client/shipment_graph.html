@@ -2,15 +2,16 @@
     <title>Shipment High(seas)chart</title>
 </head>
 <template name="main">
-    <h1>ClearView TMS Shipment Dashboard</h1>
+    <h1>Shipment Dashboard</h1>
     <hr />
     {{> yield}}
     <a href="{{pathFor route='home'}}">Home</a>
+    <a href="{{pathFor route='register'}}">Register</a>
     <p>Copyright &copy; A. Pressley, 2016.</p>
 </template>
 
 <template name="home">
-    <!--<p>Welcome to the Todos application.</p>-->
+
     <div class="portlet light">
         <div class="portlet-title"></div>
         <div class="col-lg-6" id="shipment_count" style="padding-top:15px;"></div>
@@ -19,4 +20,5 @@
 
 <template name="register">
     <h2>Register</h2>
+
 </template>

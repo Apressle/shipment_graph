@@ -1,4 +1,4 @@
-@Shipments = new Mongo.Collection "shipments"
+@Shipments = new Meteor.Collection "shipments"
 Shipments.allow
   insert: () -> true
   update: () -> true
@@ -13,8 +13,13 @@ Router.route '/',
   template: 'home'
   name: 'home'
 
+Template.main.onCreated ->
+  @subscribe 'shipments'
+  console.log "subscribed"
 
-Template.home.rendered = ->
+
+
+Template.main.rendered = ->
   Tracker.autorun ->
 		$ ->
     $('#shipment_count').highcharts
@@ -50,21 +55,23 @@ Template.home.rendered = ->
       series: [
         {
           name: 'Shipments'
-#          data: chart_data_array
+          data: chart_data_setup()
         }
       ]
     return
-
-shipments = Shipments.find().fetch()
-chart_data_array = []
-for shipment in shipments
-  chart_data = {}
-  chart_data.date = shipment.date
-  console.log chart_data.date
-  chart_data.cost = shipment.cost
-  chart_data_array.push chart_data
-console.log "chart_data_array " + chart_data_array
-return chart_data_array
+@chart_data_setup = () ->
+  console.log (Shipments.find().count())
+  shipments = Shipments.find().fetch()
+  console.log JSON.stringify(shipments)
+  chart_data_array = []
+  for shipment in shipments
+    chart_data = {}
+    chart_data.date = shipment.date
+  #  console.log chart_data.date
+    chart_data.cost = shipment.cost
+    chart_data_array.push chart_data
+  console.log "chart_data_array " + chart_data_array
+  return chart_data_array
 
 console.log 'Hello world'
 
