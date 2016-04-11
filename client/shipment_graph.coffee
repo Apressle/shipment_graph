@@ -13,13 +13,27 @@ Router.route '/',
   template: 'home'
   name: 'home'
 
-Template.home.rendered = ->
-  result = Shipments.find().fetch()
-  shipment_dates = _.pluck(result, 'date')
-  shipment_costs = _.pluck(result, 'cost')
+#Global Functions
 
+#shipment_dates = _.pluck(result, 'date')
 #  results = _.chain(result).map(_.partial(_.pick, 'date', 'cost')).value()
-  console.log shipment_dates
+#  console.log shipment_dates
+
+
+result = Shipments.find().fetch()
+_.mixin pluckMany: ->
+  args = _.rest(arguments, 1)
+  _.map arguments[0], (item) ->
+    obj = {}
+    _.each args, (arg) ->
+      obj[arg] = item[arg]
+      return
+    obj
+projected = _.chain(result).pluckMany('date', 'cost').value()
+console.log JSON.stringify(projected)
+
+Template.home.rendered = ->
+  shipment_costs = _.pluck(result, 'cost')
   Tracker.autorun ->
 		$ ->
     $('#shipment_count').highcharts
@@ -32,9 +46,9 @@ Template.home.rendered = ->
       xAxis:[
         {type: 'datetime'
         minTickInterval: 24 * 3600 * 1000}
-      {type: "datetime"
-      opposite: true
-      minTickInterval: 24 * 3600 * 1000}
+        {type: "datetime"
+        opposite: true
+        minTickInterval: 24 * 3600 * 1000}
       ]
       yAxis:
         labels:
