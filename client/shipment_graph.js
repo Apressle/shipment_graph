@@ -27,7 +27,7 @@
   });
 
   Template.home.helpers({
-    graph_data: function() {
+    chart_data_array: function() {
       var chart_data, chart_data_array, i, len, shipment, shipments;
       shipments = Shipments.find().fetch();
       chart_data_array = [];
@@ -49,9 +49,23 @@
     return console.log("subscribed");
   });
 
-  Template.main.rendered = function() {
-    Tracker.autorun(function() {});
-    return $(function() {
+  Template.home.rendered = function() {
+    Tracker.autorun(function() {
+      var chart_data, chart_data_array, i, len, shipment, shipments;
+      shipments = Shipments.find().fetch();
+      chart_data_array = [];
+      for (i = 0, len = shipments.length; i < len; i++) {
+        shipment = shipments[i];
+        chart_data = {};
+        chart_data.date = shipment.date;
+        console.log(chart_data.date);
+        chart_data.cost = shipment.cost;
+        chart_data_array.push(chart_data);
+      }
+      console.log("chart_data_array " + chart_data_array);
+      return chart_data_array;
+    });
+    return $(chart_data_array(function() {
       $('#shipment_count').highcharts({
         title: {
           text: 'Shipment Cost Over Time',
@@ -64,10 +78,6 @@
         xAxis: [
           {
             type: 'datetime',
-            minTickInterval: 24 * 3600 * 1000
-          }, {
-            type: "datetime",
-            opposite: true,
             minTickInterval: 24 * 3600 * 1000
           }
         ],
@@ -94,11 +104,13 @@
         },
         series: [
           {
-            name: 'Shipments'
+            name: 'Shipments',
+            keys: ['date', 'cost'],
+            data: chart_data_array
           }
         ]
       });
-    });
+    }));
   };
 
   console.log('Hello world');

@@ -1,3 +1,5 @@
+#chart_data_array  = new ReactiveVar(null)
+
 @Shipments = new Meteor.Collection "shipments"
 Shipments.allow
   insert: () -> true
@@ -14,7 +16,7 @@ Router.route '/',
   name: 'home'
 
 Template.home.helpers
-  graph_data: ->
+  chart_data_array: ->
     shipments = Shipments.find().fetch()
     chart_data_array = []
     for shipment in shipments
@@ -30,9 +32,19 @@ Template.main.onCreated ->
   @subscribe 'shipments'
   console.log "subscribed"
 
-Template.main.rendered = ->
+Template.home.rendered = ->
   Tracker.autorun ->
-		$ ->
+    shipments = Shipments.find().fetch()
+    chart_data_array = []
+    for shipment in shipments
+      chart_data = {}
+      chart_data.date = shipment.date
+      console.log chart_data.date
+      chart_data.cost = shipment.cost
+      chart_data_array.push chart_data
+    console.log "chart_data_array " + (chart_data_array)
+    return chart_data_array
+		$ chart_data_array ->
     $('#shipment_count').highcharts
       title:
         text: 'Shipment Cost Over Time'
@@ -43,9 +55,9 @@ Template.main.rendered = ->
       xAxis:[
         {type: 'datetime'
         minTickInterval: 24 * 3600 * 1000}
-        {type: "datetime"
-        opposite: true
-        minTickInterval: 24 * 3600 * 1000}
+#        {type: "datetime"
+#        opposite: true
+#        minTickInterval: 24 * 3600 * 1000}
       ]
       yAxis:
         labels:
@@ -66,7 +78,8 @@ Template.main.rendered = ->
       series: [
         {
           name: 'Shipments'
-#          data: shipments
+          keys: ['date', 'cost']
+          data: chart_data_array
         }
       ]
     return
