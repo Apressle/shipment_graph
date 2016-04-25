@@ -58,7 +58,8 @@
     data_array = [[Date.UTC(1970, 9, 21), 320], [Date.UTC(1970, 10, 4), 17], [Date.UTC(1970, 10, 9), 225], [Date.UTC(1970, 10, 27), 302], [Date.UTC(1970, 11, 2), 28], [Date.UTC(1970, 11, 16), 428], [Date.UTC(1970, 11, 29), 47], [Date.UTC(1971, 0, 11), 79], [Date.UTC(1971, 0, 26), 172], [Date.UTC(1971, 1, 3), 102], [Date.UTC(1971, 1, 11), 212]];
     return Tracker.autorun(function() {
       $(function() {
-        return $('#container').highcharts({
+        var chart_data, chart_data_array, i, len, shipment, shipments;
+        $('#container').highcharts({
           chart: {
             type: 'line'
           },
@@ -86,7 +87,7 @@
           },
           tooltip: {
             headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x:%e. %b}: $ {point.y:.2f}'
+            pointFormat: '{point.x:%e. %b}: ${point.y:.2f}'
           },
           plotOptions: {
             spline: {
@@ -102,6 +103,17 @@
             }
           ]
         });
+        shipments = Shipments.find().fetch();
+        chart_data_array = [];
+        for (i = 0, len = shipments.length; i < len; i++) {
+          shipment = shipments[i];
+          chart_data = {};
+          chart_data.date = shipment.date;
+          console.log(chart_data.date);
+          chart_data.cost = shipment.cost;
+          chart_data_array.push(chart_data);
+        }
+        return console.log("chart_data_array " + chart_data_array);
       });
     });
   };
