@@ -26,23 +26,7 @@
     name: 'home'
   });
 
-  Template.home.helpers({
-    chart_data_array: function() {
-      var chart_data, chart_data_array, i, len, shipment, shipments;
-      shipments = Shipments.find().fetch();
-      chart_data_array = [];
-      for (i = 0, len = shipments.length; i < len; i++) {
-        shipment = shipments[i];
-        chart_data = {};
-        chart_data.date = shipment.date;
-        console.log(chart_data.date);
-        chart_data.cost = shipment.cost;
-        chart_data_array.push(chart_data);
-      }
-      console.log("chart_data_array " + chart_data_array);
-      return chart_data_array;
-    }
-  });
+  Template.home.helpers;
 
   Template.main.onCreated(function() {
     this.subscribe('shipments');
@@ -52,6 +36,18 @@
   Template.home.rendered = function() {
     return Tracker.autorun(function() {
       $(function() {
+        var chart_data, chart_data_array, i, len, shipment, shipments;
+        shipments = Shipments.find().fetch();
+        chart_data_array = [];
+        for (i = 0, len = shipments.length; i < len; i++) {
+          shipment = shipments[i];
+          chart_data = {};
+          chart_data.date = shipment.date;
+          console.log(chart_data.date);
+          chart_data.cost = shipment.cost;
+          chart_data_array.push(chart_data);
+        }
+        console.log("chart_data_array " + chart_data_array);
         return $('#shipment_count').highcharts({
           title: {
             text: 'Shipment Cost Over Time',
@@ -65,9 +61,6 @@
             type: 'datetime'
           },
           yAxis: {
-            labels: {
-              format: '${value}'
-            },
             title: {
               text: 'Dollars'
             },
@@ -77,37 +70,16 @@
                 width: 1,
                 color: '#808080'
               }
-            ],
-            plotOptions: [
-              {
-                series: {
-                  pointStart: Date.UTC(2016, 0, 1),
-                  pointIntervalUnit: 'month'
-                }
-              }
             ]
           },
-          legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-          },
-          series: [
+          plotOptions: [
             {
-              name: 'Shipments',
-              keys: ['date', 'cost'],
-              data: [
-                {
-                  "date": Date.UTC(2016, 22, 1),
-                  "cost": 429
-                }, {
-                  "date": "4/23/2016",
-                  "cost": 250
-                }
-              ]
+              series: {
+                pointStart: Date.UTC(2016, 0, 1)
+              }
             }
-          ]
+          ],
+          series: chart_data_array
         });
       });
     });

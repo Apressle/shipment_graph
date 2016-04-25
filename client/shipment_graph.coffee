@@ -16,25 +16,8 @@ Router.route '/',
   name: 'home'
 
 Template.home.helpers
-  chart_data_array: ->
-    shipments = Shipments.find().fetch()
-    chart_data_array = []
-    for shipment in shipments
-      chart_data = {}
-      chart_data.date = shipment.date
-      console.log chart_data.date
-      chart_data.cost = shipment.cost
-      chart_data_array.push chart_data
-    console.log "chart_data_array " + (chart_data_array)
-    return chart_data_array
-
-Template.main.onCreated ->
-  @subscribe 'shipments'
-  console.log "subscribed"
-
-Template.home.rendered = ->
-  Tracker.autorun ->
-#    shipments = Shipments.find().fetch()
+#  chart_data_array: ->
+#    shipments = Shipments.find({}, {sort: {'date':1}}).fetch()
 #    chart_data_array = []
 #    for shipment in shipments
 #      chart_data = {}
@@ -44,12 +27,23 @@ Template.home.rendered = ->
 #      chart_data_array.push chart_data
 #    console.log "chart_data_array " + (chart_data_array)
 #    return chart_data_array
-#		$.each item, (index, value) ->
-#      chart_data_array.push [
-#        value.name
-#        value.cost
-#      ]
+
+Template.main.onCreated ->
+  @subscribe 'shipments'
+  console.log "subscribed"
+
+Template.home.rendered = ->
+  Tracker.autorun ->
     $ ->
+      shipments = Shipments.find().fetch()
+      chart_data_array = []
+      for shipment in shipments
+        chart_data = {}
+        chart_data.date = shipment.date
+        console.log chart_data.date
+        chart_data.cost = shipment.cost
+        chart_data_array.push chart_data
+      console.log "chart_data_array " + (chart_data_array)
       $('#shipment_count').highcharts
         title:
           text: 'Shipment Cost Over Time'
@@ -59,13 +53,9 @@ Template.home.rendered = ->
           x: -20
         xAxis:
           type: 'datetime'
-#          minTickInterval: 24 * 3600 * 1000
-#          {type: "datetime"
-#          opposite: true
-#          minTickInterval: 24 * 3600 * 1000}
         yAxis:
-          labels:
-            format: '${value}'
+#          labels:
+#            format: '${value}'
           title:
             text: 'Dollars'
           plotLines: [ {
@@ -73,26 +63,20 @@ Template.home.rendered = ->
             width: 1
             color: '#808080'
           } ]
-          plotOptions: [
-            series: {
-              pointStart: Date.UTC(2016, 0, 1),
-              pointIntervalUnit: 'month'
-            }
-          ]
-#        tooltip: valuePrefix: '$'
-        legend:
-          layout: 'vertical'
-          align: 'right'
-          verticalAlign: 'middle'
-          borderWidth: 0
-        series: [
-          {
-            name: 'Shipments'
-            keys: ['date', 'cost']
-            data: [{"date": Date.UTC(2016, 22, 1),"cost":429},
-                 {"date":"4/23/2016","cost":250}]
+        plotOptions: [
+          series: {
+            pointStart: Date.UTC(2016, 0, 1)
+#            pointIntervalUnit: 'month'
           }
-          ]
+        ]
+#        tooltip: valuePrefix: '$'
+#        legend:
+#          layout: 'vertical'
+#          align: 'right'
+#          verticalAlign: 'middle'
+#          borderWidth: 0
+        series: chart_data_array
+
     return
 
 console.log 'Hello world'
