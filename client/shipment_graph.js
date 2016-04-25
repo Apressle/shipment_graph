@@ -26,7 +26,27 @@
     name: 'home'
   });
 
-  Template.home.helpers;
+  Template.home.helpers({
+    chart_data_array: function() {
+      var chart_data, chart_data_array, i, len, shipment, shipments;
+      shipments = Shipments.find({}, {
+        sort: {
+          'date': 1
+        }
+      }).fetch();
+      chart_data_array = [];
+      for (i = 0, len = shipments.length; i < len; i++) {
+        shipment = shipments[i];
+        chart_data = {};
+        chart_data.date = shipment.date;
+        console.log(chart_data.date);
+        chart_data.cost = shipment.cost;
+        chart_data_array.push(chart_data);
+      }
+      console.log("chart_data_array " + chart_data_array);
+      return chart_data_array;
+    }
+  });
 
   Template.main.onCreated(function() {
     this.subscribe('shipments');
@@ -34,52 +54,53 @@
   });
 
   Template.home.rendered = function() {
+    var data_array;
+    data_array = [[Date.UTC(1970, 9, 21), 320], [Date.UTC(1970, 10, 4), 17], [Date.UTC(1970, 10, 9), 225], [Date.UTC(1970, 10, 27), 302], [Date.UTC(1970, 11, 2), 28], [Date.UTC(1970, 11, 16), 428], [Date.UTC(1970, 11, 29), 47], [Date.UTC(1971, 0, 11), 79], [Date.UTC(1971, 0, 26), 172], [Date.UTC(1971, 1, 3), 102], [Date.UTC(1971, 1, 11), 212]];
     return Tracker.autorun(function() {
       $(function() {
-        var chart_data, chart_data_array, i, len, shipment, shipments;
-        shipments = Shipments.find().fetch();
-        chart_data_array = [];
-        for (i = 0, len = shipments.length; i < len; i++) {
-          shipment = shipments[i];
-          chart_data = {};
-          chart_data.date = shipment.date;
-          console.log(chart_data.date);
-          chart_data.cost = shipment.cost;
-          chart_data_array.push(chart_data);
-        }
-        console.log("chart_data_array " + chart_data_array);
-        return $('#shipment_count').highcharts({
+        return $('#container').highcharts({
+          chart: {
+            type: 'line'
+          },
           title: {
-            text: 'Shipment Cost Over Time',
-            x: -20
+            text: 'Shipments'
           },
           subtitle: {
-            text: '',
-            x: -20
+            text: 'Shipment Cost Over Time'
           },
           xAxis: {
-            type: 'datetime'
+            type: 'datetime',
+            dateTimeLabelFormats: {
+              month: '%e. %b',
+              year: '%b'
+            },
+            title: {
+              text: 'Date'
+            }
           },
           yAxis: {
             title: {
-              text: 'Dollars'
+              text: 'Cost ($)'
             },
-            plotLines: [
-              {
-                value: 0,
-                width: 1,
-                color: '#808080'
-              }
-            ]
+            min: 0
           },
-          plotOptions: [
-            {
-              series: {
-                pointStart: Date.UTC(2016, 0, 1)
+          tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x:%e. %b}: $ {point.y:.2f}'
+          },
+          plotOptions: {
+            spline: {
+              marker: {
+                enabled: true
               }
             }
-          ],
-          series: chart_data_array
+          },
+          series: [
+            {
+              name: '2015-2016',
+              data: data_array
+            }
+          ]
         });
       });
     });
